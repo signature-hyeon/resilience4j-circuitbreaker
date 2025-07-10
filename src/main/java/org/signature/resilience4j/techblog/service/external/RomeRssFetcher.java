@@ -3,12 +3,13 @@ package org.signature.resilience4j.techblog.service.external;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.SyndFeedInput;
+import com.rometools.rome.io.XmlReader;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
 import org.signature.resilience4j.techblog.domain.response.TechBlogQueryResponse;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
-import com.rometools.rome.io.XmlReader;
 
 import java.time.Instant;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
 @Component
 public class RomeRssFetcher implements RssFetcher {
 
+    @CircuitBreaker(name = "rssFetcher", fallbackMethod = "fallbackFetch")
     @Override
     public List<TechBlogQueryResponse> fetchLatestPosts(String rssUrl) {
         try (XmlReader reader = new XmlReader(new URL(rssUrl))) {
@@ -37,4 +39,10 @@ public class RomeRssFetcher implements RssFetcher {
                 Instant.now().getEpochSecond()
         );
     }
+
+    public List<TechBlogQueryResponse> fallbackFetch(String rssUrl, Throwable t) {
+        log.warn("Fallback triggered for RSS URL: {}", rssUrl, t);
+        return List.of();
+    }
+
 }

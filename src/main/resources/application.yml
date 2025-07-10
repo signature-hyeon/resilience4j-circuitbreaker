@@ -1,0 +1,12 @@
+resilience4j:
+  circuitbreaker:
+    instances:
+      rssFetcher:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 5s
+        permittedNumberOfCallsInHalfOpenState: 2
+        slowCallDurationThreshold: 2s
+        slowCallRateThreshold: 100
