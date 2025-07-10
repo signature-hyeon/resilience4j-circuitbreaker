@@ -1,11 +1,10 @@
-package org.signature.resilience4j.techblog.service;
+package org.signature.resilience4j.techblog.service.query;
 
 import lombok.RequiredArgsConstructor;
 import org.signature.resilience4j.techblog.domain.response.TechBlogQueryResponse;
 import org.signature.resilience4j.techblog.domain.response.TechBlogsQueryResponse;
 import org.signature.resilience4j.techblog.domain.type.TechBlogType;
 import org.signature.resilience4j.techblog.service.external.RssFetcher;
-import org.signature.resilience4j.techblog.service.query.TechBlogUseCase;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
