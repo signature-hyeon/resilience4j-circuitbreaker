@@ -1,7 +1,9 @@
-# TechFeed Aggregator
+# TechBlog Feed
 
-기술 블로그(RSS)를 수집하여 최신 글을 조회하거나 키워드로 검색할 수 있는 REST API 서비스입니다.  
-외부 RSS 호출 실패에 대비하여 resilience4j 서킷 브레이커를 적용하였습니다.
+- 기술 블로그(RSS)에서 최신 글을 수집하는 REST API 서비스입니다.
+- 블로그별 최신 글 조회 및 키워드 검색 기능을 제공합니다.
+- 외부 RSS 장애에 대비해 resilience4j 서킷 브레이커를 적용했습니다.
+- 서킷 브레이커의 동작 원리를 실습하고 학습하기 위한 예제 프로젝트입니다.
 
 ---
 
@@ -12,14 +14,6 @@
 - resilience4j CircuitBreaker 적용 (블로그별 상태 보호 및 fallback)
 
 ---
-
-## 사용 기술
-
-- Java 17
-- Spring Boot 3
-- WebClient
-- resilience4j
-- Rome (RSS 파서)
 
 ## 예시 요청
 ```
@@ -34,6 +28,12 @@ GET /api/techblogs/search?keyword=spring
 - 외부 호출 지연(2초 초과) 또는 예외 발생 시 fallback 응답 반환
 - fallback: 기본 메시지 또는 빈 결과 제공
 
+## 🧪 Test
+
+- 정상 RSS 요청 시 게시글을 파싱해 반환하는지 테스트합니다.
+- 잘못된 URL 요청 시 fallback이 작동해 빈 리스트를 반환하는지 확인합니다.
+- 서킷브레이커 동작을 확인하기 위해 실패를 반복해 상태 전이를 검증하는 테스트도 포함되어 있습니다.  
+  (※ 실제 서비스 테스트에는 포함하지 않으며, 학습 목적입니다)
 
 ## 참고 RSS 목록
 - Kakao: https://tech.kakao.com/feed/
