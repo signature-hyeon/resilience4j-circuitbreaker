@@ -1,6 +1,7 @@
 package org.signature.resilience4j.techblog.service.query;
 
 import lombok.RequiredArgsConstructor;
+import org.signature.resilience4j.techblog.domain.dto.TechBlogDto;
 import org.signature.resilience4j.techblog.domain.response.TechBlogQueryResponse;
 import org.signature.resilience4j.techblog.domain.response.TechBlogsQueryResponse;
 import org.signature.resilience4j.techblog.domain.type.TechBlogType;
@@ -17,8 +18,14 @@ public class TechBlogUseCaseImpl implements TechBlogUseCase {
 
     @Override
     public TechBlogsQueryResponse getLatestPosts(TechBlogType blogType) {
-        List<TechBlogQueryResponse> posts = rssFetcher.fetchLatestPosts(blogType.getRssUrl());
-        return new TechBlogsQueryResponse(blogType.getBlogName(), posts);
+        List<TechBlogDto> posts = rssFetcher.fetchLatestPosts(blogType.getRssUrl());
+        List<TechBlogQueryResponse> result = posts.stream()
+                .map(post -> new TechBlogQueryResponse(
+                        post.title(),
+                        post.link(),
+                        post.publishedAt()
+                )).toList();
+        return new TechBlogsQueryResponse(blogType.getBlogName(), result);
     }
 
 }

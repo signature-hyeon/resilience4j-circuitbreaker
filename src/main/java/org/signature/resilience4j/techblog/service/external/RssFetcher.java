@@ -1,11 +1,11 @@
 package org.signature.resilience4j.techblog.service.external;
 
-import org.signature.resilience4j.techblog.domain.response.TechBlogQueryResponse;
+import org.signature.resilience4j.techblog.domain.dto.TechBlogDto;
 
 import java.util.List;
 
 public interface RssFetcher {
 
-    List<TechBlogQueryResponse> fetchLatestPosts(String rssUrl);
+    List<TechBlogDto> fetchLatestPosts(String rssUrl);
 
 }

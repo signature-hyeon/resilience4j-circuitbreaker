@@ -6,6 +6,7 @@ import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
+import org.signature.resilience4j.techblog.domain.dto.TechBlogDto;
 import org.signature.resilience4j.techblog.domain.response.TechBlogQueryResponse;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +21,7 @@ public class RomeRssFetcher implements RssFetcher {
 
     @CircuitBreaker(name = "rssFetcher", fallbackMethod = "fallbackFetch")
     @Override
-    public List<TechBlogQueryResponse> fetchLatestPosts(String rssUrl) {
+    public List<TechBlogDto> fetchLatestPosts(String rssUrl) {
         try (XmlReader reader = new XmlReader(new URL(rssUrl))) {
             SyndFeed feed = new SyndFeedInput().build(reader);
             return feed.getEntries().stream()
@@ -32,15 +33,15 @@ public class RomeRssFetcher implements RssFetcher {
         }
     }
 
-    private TechBlogQueryResponse toDto(SyndEntry entry) {
-        return new TechBlogQueryResponse(
+    private TechBlogDto toDto(SyndEntry entry) {
+        return new TechBlogDto(
                 entry.getTitle(),
                 entry.getLink(),
                 Instant.now().getEpochSecond()
         );
     }
 
-    public List<TechBlogQueryResponse> fallbackFetch(String rssUrl, Throwable t) {
+    public List<TechBlogDto> fallbackFetch(String rssUrl, Throwable t) {
         log.warn("Fallback triggered for RSS URL: {}", rssUrl, t);
         return List.of();
     }
