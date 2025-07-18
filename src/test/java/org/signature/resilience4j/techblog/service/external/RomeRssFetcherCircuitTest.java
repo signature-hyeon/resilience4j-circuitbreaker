@@ -5,7 +5,7 @@ import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.signature.resilience4j.techblog.domain.response.TechBlogQueryResponse;
+import org.signature.resilience4j.techblog.domain.dto.TechBlogDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -58,7 +58,7 @@ class RomeRssFetcherCircuitTest {
         Assertions.assertEquals(CircuitBreaker.State.OPEN, cb.getState());
 
         // when: Open 상태에서 다시 호출
-        List<TechBlogQueryResponse> result = rssFetcher.fetchLatestPosts(invalidUrl);
+        List<TechBlogDto> result = rssFetcher.fetchLatestPosts(invalidUrl);
 
         // then: fallback이 작동해 빈 리스트 반환
         assertThat(result).isEmpty();

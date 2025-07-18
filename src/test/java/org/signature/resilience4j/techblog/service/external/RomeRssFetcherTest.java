@@ -2,12 +2,11 @@ package org.signature.resilience4j.techblog.service.external;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.signature.resilience4j.techblog.domain.response.TechBlogQueryResponse;
+import org.signature.resilience4j.techblog.domain.dto.TechBlogDto;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class RomeRssFetcherTest {
 
@@ -20,7 +19,7 @@ class RomeRssFetcherTest {
         String rssUrl = "https://tech.kakao.com/feed/";
 
         // when
-        List<TechBlogQueryResponse> result = fetcher.fetchLatestPosts(rssUrl);
+        List<TechBlogDto> result = fetcher.fetchLatestPosts(rssUrl);
 
         // then
         assertThat(result).isNotEmpty();
@@ -31,7 +30,7 @@ class RomeRssFetcherTest {
     @DisplayName("fallback 메서드는 빈 리스트를 반환한다")
     void fallbackFetch_returnsEmptyList() {
         // when
-        List<TechBlogQueryResponse> fallbackResult = fetcher.fallbackFetch("https://broken-url.com", new RuntimeException());
+        List<TechBlogDto> fallbackResult = fetcher.fallbackFetch("https://broken-url.com", new RuntimeException());
 
         // then
         assertThat(fallbackResult).isEmpty();
